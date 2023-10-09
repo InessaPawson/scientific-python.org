@@ -8,6 +8,9 @@ disableKinds: ["term", "taxonomy"]
 markup:
   highlight:
     noClasses: false
+  goldmark:
+    renderer:
+      unsafe: true
 
 params:
   description: Community developed and owned ecosystem for scientific computing
@@ -37,15 +40,9 @@ params:
     - title: Home
       url: /
     - title: Blog
-      url: https://blog.scientific-python.org/
-    #- title: User Guide
-    #  url: https://learn.scientific-python.org/users/
-    #- title: Contributor Guide
-    #  url: https://learn.scientific-python.org/contributors/
-    #- title: Maintainer Guide
-    #  url: https://learn.scientific-python.org/maintainers/
-    - title: SPECs
-      url: /specs/
+      url: https://blog.scientific-python.org
+    - title: Learn
+      url: https://learn.scientific-python.org
 
   hero:
     # Main hero title
@@ -53,26 +50,44 @@ params:
     # Hero subtitle (optional)
     subtitle: Community developed, community owned
     # Button text
-    buttontext: Get started
+    buttontext: About
     # Where the main hero button links to
-    buttonlink: https://learn.scientific-python.org/
+    buttonlink: about
     # Hero image (from static/images/___)
     image: logo.svg
 
   keyfeatures:
     features:
-      - title: Built on Python
-        text: Python is a powerful, general-purpose programming language. The scientific Python ecosystem provides the tools that make Python the premier language for scientific computing.
-      - title: Open source
-        text: Distributed under unrestrictive open source licenses, projects are developed and maintained publicly and accessible to all.
-      - title: Community-driven
-        text: Projects are developed by open communities composed primarily of the users of the software.
-      - title: Extensive and high quality
-        text: The scientific Python ecosystem comprises performant, well-tested libraries providing tools for computing across all scientific domains.
-      - title: Broadly applicable
-        text: The ecosystem is widely used in scientific research and teaching.
-      - title: Coordinated, readable, reproducible
-        text: Projects in the ecosystem are completely interoperable, providing the basis for readable, reproducible scientific computation.
+      - title: SPECs
+        text: |
+          [Scientific Python Ecosystem Coordination]({{< relref "/specs" >}})
+          documents are a mechanism by which practices are
+          discussed and propagated throughout the ecosystem.
+      - title: Summits
+        text: |
+          At the [summits]({{< relref "/summits" >}}), we get together both virtually and in-person
+          to plan and do ecosystem work.
+      - title: Development Guide
+        text: |
+          Read this [community-maintained guide](https://learn.scientific-python.org/development/)
+          to learn best practices for library development.
+      - title: Lecture Notes
+        text: |
+          Learn or teach how to use the scientific Python ecosystem with [classroom-style lecture notes](https://lectures.scientific-python.org).
+      - title: Sparse Arrays
+        text: |
+          One of our current focuses is on improving and maintaining the
+          [sparse array]({{< relref "/grants/sparse_arrays/" >}}) capabilities and
+          interoperability in the ecosystem.
+      - title: Community
+        text: |
+          Our [community efforts]({{< relref "/community" >}}) focus
+          on broadening participation and better coordinating volunteer efforts.
+
+        #      - title: Tools
+        #        text: |
+        #          We maintain a collection of [tools]({{< relref "/tools" >}})
+        #          used across the ecosystem.
 
   footer:
     logo: logo.svg
@@ -112,12 +127,12 @@ params:
       column2:
         title: "Maintainers"
         links:
-          - text: Community
-            link: /community/
-          - text: Calendars
-            link: /calendars
+          - text: SPECs
+            link: /specs/
           - text: Summits
             link: /summits/
+          - text: Calendars
+            link: /calendars
       column3:
         links:
           - text: Press kit

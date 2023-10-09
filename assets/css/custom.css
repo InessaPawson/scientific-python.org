@@ -1,5 +1,6 @@
 table.spec__table {
   width: 100%;
+  margin-top: 1.2rem;
 }
 
 table.spec__table thead {
@@ -102,10 +103,6 @@ table.spec__table thead {
 .endorsed-specs-list a {
   color: #1e87f0;
   font-weight: bold;
-}
-
-code {
-  color: #004811;
 }
 
 .endorse-icon {

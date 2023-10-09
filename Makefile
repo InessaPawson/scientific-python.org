@@ -1,4 +1,4 @@
-.PHONY: help prepare html serve serve-dev clean calendars teams teams-clean
+.PHONY: help prepare html serve serve-dev clean calendars teams teams-clean core-project-json
 .DEFAULT_GOAL := help
 SHELL:=/bin/bash
 
@@ -11,8 +11,8 @@ help:   ## show this help
 
 prepare:
 	git submodule update --init
-	pip install -r requirements.txt
-	pre-commit install
+	((python -c 'import yaml2ics' && pre-commit) > /dev/null 2>&1) || pip install -q -r requirements.txt
+	test -f .git/hooks/pre-commit || pre-commit install
 
 CALENDAR_DIR = content/calendars
 
@@ -22,11 +22,11 @@ $(CALENDAR_DIR):
 $(CALENDAR_DIR)/%.ics: calendars/%.yaml $(CALENDAR_DIR)
 	yaml2ics $< > $@
 
-calendars: $(CALENDAR_DIR)/numpy.ics $(CALENDAR_DIR)/scipy.ics $(CALENDAR_DIR)/matplotlib.ics $(CALENDAR_DIR)/skimage.ics $(CALENDAR_DIR)/networkx.ics $(CALENDAR_DIR)/sunpy.ics $(CALENDAR_DIR)/xarray.ics $(CALENDAR_DIR)/contributor-experience.ics
-
+CALENDAR_SOURCES = $(wildcard calendars/*.yaml)
+calendars: $(subst calendars,$(CALENDAR_DIR),$(CALENDAR_SOURCES:.yaml=.ics))
 
 TEAMS_DIR = static/teams
-TEAMS = community-managers spec-steering-committee community-leaders
+TEAMS = community-managers spec-steering-committee community-leaders emeritus-spec-steering-committee emeritus-community-leaders
 TEAMS_QUERY = python themes/scientific-python-hugo-theme/tools/team_query.py
 
 $(TEAMS_DIR):
@@ -42,15 +42,20 @@ teams-clean:
 
 teams: | teams-clean $(patsubst %,$(TEAMS_DIR)/%.md,$(TEAMS)) ## generates team gallery pages
 
+core-project-json: content/specs/core-projects/core-projects.json
 
-html: prepare calendars ## build the website in ./public
+content/specs/core-projects/core-projects.json: content/specs/core-projects/[^_]*.md
+	@echo "Generating project JSON: $@"
+	@python tools/md-header-to-json.py $? > $@
+
+html: prepare calendars core-project-json ## build the website in ./public
 	@hugo
 
-serve: prepare calendars ## serve the website
+serve: prepare calendars core-project-json ## serve the website
 	@hugo --printI18nWarnings server
 
 serve-dev: prepare calendars
-	@hugo --printI18nWarnings --disableFastRender server
+	@hugo --printI18nWarnings server --disableFastRender
 
 clean:
 	rm -rf public content/calendars/*.ics
